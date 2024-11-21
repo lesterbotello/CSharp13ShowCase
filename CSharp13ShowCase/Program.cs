@@ -1,16 +1,19 @@
 ﻿#region Params Collection
 // New in C# 13: params collection:
 // ****************************************************************************
-// ListPerson(new Person("John", 30), new Person("Jane", 25));
+// ListPerson(new Person("Juan", 30), new Person("Juana", 25));
 // return;
 //
-// void ListPerson<T>(params ReadOnlySpan<T> items) where T : Person
+// void ListPerson<T>(params T[] items) where T : Person
+// //void ListPerson<T>(params IEnumerable<T> items) where T : Person
 // {
 //     foreach (var item in items)
 //     {
-//         Console.WriteLine($"{item.Name} is {item.Age} years old.");
+//         Console.WriteLine($"{item.Name} tiene {item.Age} años.");
 //     }
 // }
+//
+// public record Person(string Name, int Age);
 // ****************************************************************************
 #endregion
 
@@ -18,7 +21,7 @@
 // New in C# 13: System.Threading.Lock
 // Shared counter
 // Old way:
-// ****************************************************************************
+// // ****************************************************************************
 // var sharedCounter = 0;
 // var lockObject = new object();
 // Console.WriteLine("Starting threads...");
@@ -127,19 +130,19 @@
 // Console.WriteLine($"Are they equivalent? {ansiEscapeSequence == unicodeLongEscapeSequence}");
 #endregion
 
-#region field keyword
+#region field keyword y propiedades parciales
 // New in C# 13: field keyword
 // ****************************************************************************
 // public class User
 // {
 //     // Old way:
 //     // ****************************************************************************
-//     private string _name;
-//     public string Name
-//     {
-//         get => _name;
-//         set => _name = value;
-//     }
+//     // private string _name;
+//     // public string Name
+//     // {
+//     //     get => _name;
+//     //     set => _name = value;
+//     // }
 //     // ****************************************************************************
 //     // New way:
 //     // Requires adding "<LangVersion>preview</LangVersion>" to the .csproj file
@@ -153,34 +156,7 @@
 // }
 #endregion
 
-#region ref struct interfaces y allows ref struct
-int[] numbers = [1, 2, 3, 4, 5];
-var span = new Span<int>(numbers);
-
-var example = new RefStructExample(span);
-example.Process();
-
-Console.WriteLine(string.Join(", ", numbers)); // Output: 2, 4, 6, 8, 10
-public ref struct RefStructExample(Span<int> data) : IDisposable
-{
-    private Span<int> _data = data;
-
-    public void Process()
-    {
-        for (var i = 0; i < _data.Length; i++)
-        {
-            _data[i] *= 2; // Double each element
-        }
-    }
-
-    public void Dispose()
-    {
-        _data = null;
-    }
-}
-#endregion
-
-#region Overload resolution priority
+#region ref struct interfaces y allows ref struct, Overload resolution priority
 // using System.Collections.Immutable;
 //
 // Disposer.DisposeAll<StringReader>(new StringReader("Hello"), new StringReader("World"));
@@ -189,7 +165,7 @@ public ref struct RefStructExample(Span<int> data) : IDisposable
 // {
 //     public static void DisposeAll<T>(params IEnumerable<T> disposables) where T : IDisposable
 //     {
-//         foreach (var disposable in disposables)
+//         foreach (IDisposable disposable in disposables)
 //         {
 //             disposable.Dispose();
 //         }
@@ -212,3 +188,9 @@ public ref struct RefStructExample(Span<int> data) : IDisposable
 //     }
 // }
 #endregion
+
+#region Implicit index access
+// var people = new [] { "Juan", "Juana", "María", "José" };
+// Console.WriteLine(people[^1]);
+#endregion
+
